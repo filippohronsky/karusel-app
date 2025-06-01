@@ -1,26 +1,14 @@
-// This file contains the JavaScript code for the carousel functionality.
+const totalImages = 10; // zmeň podľa počtu fotiek
+const interval = 3000;  // 5 sekúnd
+let current = 1;
 
-document.addEventListener('DOMContentLoaded', function() {
-    const carouselImages = document.querySelectorAll('.carousel-image');
-    const nextButton = document.querySelector('.next');
-    const prevButton = document.querySelector('.prev');
-    let currentIndex = 0;
+function updateImage() {
+  const img = document.getElementById('photo');
+  img.src = `images/${current}.jpg`;
+  current = current % totalImages + 1;
+}
 
-    function updateCarousel() {
-        carouselImages.forEach((image, index) => {
-            image.style.display = index === currentIndex ? 'block' : 'none';
-        });
-    }
-
-    nextButton.addEventListener('click', function() {
-        currentIndex = (currentIndex + 1) % carouselImages.length;
-        updateCarousel();
-    });
-
-    prevButton.addEventListener('click', function() {
-        currentIndex = (currentIndex - 1 + carouselImages.length) % carouselImages.length;
-        updateCarousel();
-    });
-
-    updateCarousel();
-});
+window.onload = () => {
+  updateImage();
+  setInterval(updateImage, interval);
+};
