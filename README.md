@@ -14,13 +14,13 @@ A lightweight static web application that displays a fullscreen rotating carouse
 On page load, the app attempts to load images from the `images/` folder in numerical order (e.g. `1.jpg`, `2.jpg`, ...). When it fails to load the next image (e.g. missing `6.jpg`), it stops and rotates through the successfully loaded images.
 
 ## Project Structure
-
+<pre lang="text"><code>
 .
 ├── index.html          # Main HTML page
 ├── script.js           # JavaScript logic for loading and rotating images
 ├── style.css           # Basic fullscreen styling
 └── images/             # Folder with images (1.jpg, 2.jpg, …)
-
+</code></pre>
 ## Hosting on Azure Static Web Apps
 
 1. Choose the **Custom** preset when setting up Azure Static Web App.
@@ -36,13 +36,13 @@ On page load, the app attempts to load images from the `images/` folder in numer
 
 Place your FullHD images (1920x1080) in the `images/` directory.
 Ensure they are named numerically:
-
+<pre lang="text"><code>
 images/
 ├── 1.jpg
 ├── 2.jpg
 ├── 3.jpg
 └── …
-
+</code></pre>
 ## Configuration
 
 To change the carousel interval, edit the `startCarousel()` function in `script.js`:
