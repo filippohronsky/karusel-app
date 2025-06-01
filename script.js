@@ -1,65 +1,46 @@
 let imageList = [];
 let current = 0;
-const interval = 5000; // 5 sekúnd
+const interval = 5000; // Interval in milliseconds to change the image
 
-// Dynamicky skúša nájsť ďalšie obrázky
-function findNextImage(index, callback) {
-  const img = new Image();
-  img.onload = () => callback(true);
-  img.onerror = () => callback(false);
-  img.src = `images/${index}.jpg`;
-}
-
-function extendImageList(callback) {
-  let index = imageList.length + 1;
-
-  function checkNext() {
-    findNextImage(index, (exists) => {
-      if (exists) {
-        imageList.push(`${index}.jpg`);
-        index++;
-        checkNext(); // skús ďalší
-      } else {
-        callback(); // skonči, keď už ďalší nie je
-      }
-    });
-  }
-
-  checkNext();
-}
-
-function updateImage() {
-  const img = document.getElementById('photo');
-  img.src = `images/${imageList[current]}`;
-  current = (current + 1) % imageList.length;
-
-  // Ak sme sa vrátili na začiatok, skontroluj, či nepribudol nový obrázok
-  if (current === 0) {
-    extendImageList(() => {
-      console.log("Checked for new images. Total:", imageList.length);
-    });
-  }
-}
-
-function preloadInitialImages(callback) {
+function scanImages(callback) {
   let index = 1;
+  const newList = [];
 
   function tryNext() {
     const img = new Image();
     img.onload = () => {
-      imageList.push(`${index}.jpg`);
+      newList.push(`${index}.jpg`);
       index++;
       tryNext();
     };
-    img.onerror = () => callback();
-    img.src = `images/${index}.jpg`;
+    img.onerror = () => {
+      callback(newList);
+    };
+    img.src = `images/${index}.jpg?nocache=${Date.now()}`; // nocache = vyhneš sa cache
   }
 
   tryNext();
 }
 
+function updateImage() {
+  if (imageList.length === 0) return;
+
+  const img = document.getElementById('photo');
+  img.src = `images/${imageList[current]}?nocache=${Date.now()}`;
+  current = (current + 1) % imageList.length;
+
+  // Na začiatku cyklu urob nové skenovanie
+  if (current === 0) {
+    scanImages((newList) => {
+      imageList = newList;
+      console.log("Updated image list:", imageList);
+    });
+  }
+}
+
 window.onload = () => {
-  preloadInitialImages(() => {
+  scanImages((newList) => {
+    imageList = newList;
     if (imageList.length > 0) {
       updateImage();
       setInterval(updateImage, interval);
