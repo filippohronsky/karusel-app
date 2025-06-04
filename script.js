@@ -9,7 +9,7 @@ function scanImages(callback) {
   function tryNext() {
     const img = new Image();
     img.onload = () => {
-      newList.push(`${index}.jpg`);
+      newList.push(`${index}.png`);
       index++;
       tryNext();
     };
