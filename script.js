@@ -16,7 +16,7 @@ function scanImages(callback) {
     img.onerror = () => {
       callback(newList);
     };
-    img.src = `images/${index}.jpg?nocache=${Date.now()}`; // nocache = vyhneš sa cache
+    img.src = `images/${index}.png?nocache=${Date.now()}`; // nocache = vyhneš sa cache
   }
 
   tryNext();
