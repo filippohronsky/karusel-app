@@ -1,6 +1,6 @@
 let imageList = [];
 let current = 0;
-const interval = 5000; // Interval in milliseconds to change the image
+const interval = 15000; // Interval in milliseconds to change the image
 
 function scanImages(callback) {
   let index = 1;
